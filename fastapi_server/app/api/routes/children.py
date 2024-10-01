@@ -21,7 +21,7 @@ router = APIRouter(
 # Basic Parent Endpoints
 # =========================================================================== #
 @router.post("/", response_model=ChildInDB, status_code=status.HTTP_201_CREATED)
-async def create_child(
+async def create(
     child_new: ChildCreate,
     child_repo: ChildRepository = Depends(get_repository(ChildRepository)),
 ) -> ChildInDB:
