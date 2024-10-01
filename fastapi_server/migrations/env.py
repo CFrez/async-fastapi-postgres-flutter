@@ -39,6 +39,7 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
 
@@ -78,7 +79,11 @@ async def run_migrations_online():
 
     """
     # varies between live and test migrations
-    DATABASE_URL = f"{settings.database_url}_test" if os.environ.get("TESTING") else settings.database_url
+    DATABASE_URL = (
+        f"{settings.database_url}_test"
+        if os.environ.get("TESTING")
+        else settings.database_url
+    )
 
     connectable = context.config.attributes.get("connection", None)
     config.set_main_option("sqlalchemy.url", DATABASE_URL)
@@ -91,7 +96,7 @@ async def run_migrations_online():
                 # future=True
             )
         )
-        
+
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
 

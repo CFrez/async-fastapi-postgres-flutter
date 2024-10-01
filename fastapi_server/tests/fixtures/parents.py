@@ -1,4 +1,5 @@
 """Fixtures for testing 'parent' ressource."""
+
 import datetime as dt
 from typing import List
 
@@ -16,9 +17,10 @@ def Parent1_Create() -> ParentCreate:
     parent = ParentCreate(
         name="Parent 1",
         birthdate=dt.datetime(1980, 1, 1),
-        height=1.90,  
+        height=1.90,
     )
     return jsonable_encoder(parent)
+
 
 @pytest.fixture
 def Parent1_InDB_Schema() -> ParentCreate:
@@ -28,10 +30,11 @@ def Parent1_InDB_Schema() -> ParentCreate:
         id=1,
         name="Parent 1",
         birthdate=dt.datetime(1980, 1, 1),
-        height=1.90, 
-        updated_at=UPDATED_AT_DEFAULT
+        height=1.90,
+        updated_at=UPDATED_AT_DEFAULT,
     )
     return jsonable_encoder(parent)
+
 
 @pytest.fixture
 def Parent1_InDB_Model(Parent1_InDB_Schema) -> ParentModel:
@@ -45,9 +48,10 @@ def Parent2_Create() -> ParentCreate:
     parent = ParentCreate(
         name="Parent 2",
         birthdate=dt.datetime(1985, 1, 1),
-        height=1.90, 
+        height=1.90,
     )
     return jsonable_encoder(parent)
+
 
 @pytest.fixture
 def Parent2_InDB_Schema() -> ParentCreate:
@@ -57,10 +61,11 @@ def Parent2_InDB_Schema() -> ParentCreate:
         id=2,
         name="Parent 2",
         birthdate=dt.datetime(1985, 1, 1),
-        height=1.90, 
-        updated_at=UPDATED_AT_DEFAULT
+        height=1.90,
+        updated_at=UPDATED_AT_DEFAULT,
     )
     return jsonable_encoder(parent)
+
 
 @pytest.fixture
 def Parent2_InDB_Model(Parent2_InDB_Schema) -> ParentModel:
@@ -74,9 +79,10 @@ def Parent3_Create() -> ParentCreate:
     parent = ParentCreate(
         name="New Parent 3",
         birthdate=dt.datetime(1970, 1, 1),
-        height=1.75, 
+        height=1.75,
     )
     return jsonable_encoder(parent)
+
 
 @pytest.fixture
 def Parent3_InDB_Schema() -> ParentCreate:
@@ -87,9 +93,10 @@ def Parent3_InDB_Schema() -> ParentCreate:
         name="New Parent 3",
         birthdate=dt.datetime(1970, 1, 1),
         height=1.75,
-        updated_at=UPDATED_AT_DEFAULT
+        updated_at=UPDATED_AT_DEFAULT,
     )
     return jsonable_encoder(parent)
+
 
 @pytest.fixture
 def Parent3_InDB_Model(Parent3_InDB_Schema) -> ParentModel:

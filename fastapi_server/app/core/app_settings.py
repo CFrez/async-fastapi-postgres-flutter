@@ -1,4 +1,5 @@
 """Settings that will be used throughout the application."""
+
 import logging
 import os
 import sys
@@ -10,8 +11,9 @@ from pydantic import PostgresDsn
 from app.core.logging import format_record, InterceptHandler
 
 
-class AppSettings():
+class AppSettings:
     """Bundle all app settings."""
+
     app_env: str = os.getenv("APP_ENV")
 
     # FastAPI App settings
@@ -39,7 +41,6 @@ class AppSettings():
     logging_level: int = logging.DEBUG
     loggers: Tuple[str, str] = ("uvicorn.asgi", "uvicorn.access")
 
-
     @property
     def fastapi_kwargs(self) -> Dict[str, Any]:
         return {
@@ -52,7 +53,7 @@ class AppSettings():
             "version": self.version,
             "description": self.description,
         }
-    
+
     @property
     def database_settings(self) -> Dict[str, Any]:
         return {
@@ -62,17 +63,16 @@ class AppSettings():
             "postgres_port": self.postgres_port,
             "postgres_db": self.postgres_db,
         }
-    
+
     @property
     def database_url(self) -> PostgresDsn:
         """Create a valid Postgres database url."""
         return f"postgresql+{self.postgres_driver}://{self.postgres_user}:{self.postgres_password}@{self.postgres_server}:{self.postgres_port}/{self.postgres_db}"
 
-
     def configure_logging(self) -> None:
         """Configure and format logging used in app."""
         logging.basicConfig()
-        logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+        logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
         # intercept everything at the root logger
         logging.root.handlers = [InterceptHandler()]
         logging.root.setLevel("DEBUG")
@@ -84,5 +84,13 @@ class AppSettings():
             logging.getLogger(name).propagate = True
 
         # configure loguru
-        logger.configure(handlers=[{"sink": sys.stdout, "serialize": False, "format": format_record, "colorize":True,}])
-   
+        logger.configure(
+            handlers=[
+                {
+                    "sink": sys.stdout,
+                    "serialize": False,
+                    "format": format_record,
+                    "colorize": True,
+                }
+            ]
+        )

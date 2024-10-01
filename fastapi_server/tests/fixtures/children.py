@@ -1,4 +1,5 @@
 """Fixtures for testing 'child' ressource."""
+
 import datetime as dt
 
 from fastapi.encoders import jsonable_encoder
@@ -17,9 +18,10 @@ def Child1_Create_Schema() -> ChildCreate:
         birthdate=dt.datetime(2000, 1, 1),
         height=1.80,
         hobby="Computer Science",
-        parent_id=1
+        parent_id=1,
     )
     return jsonable_encoder(child)
+
 
 @pytest.fixture
 def Child1_InDB_Schema() -> ChildInDB:
@@ -32,9 +34,10 @@ def Child1_InDB_Schema() -> ChildInDB:
         height=1.80,
         hobby="Computer Science",
         parent_id=1,
-        updated_at=UPDATED_AT_DEFAULT
+        updated_at=UPDATED_AT_DEFAULT,
     )
     return jsonable_encoder(child)
+
 
 @pytest.fixture
 def Child1_InDB_Model(Child1_InDB_Schema) -> ChildModel:
@@ -50,9 +53,10 @@ def Child2_Create() -> ChildCreate:
         birthdate=dt.datetime(2005, 1, 1),
         height=1.70,
         hobby="Bouldering",
-        parent_id=1
+        parent_id=1,
     )
     return jsonable_encoder(child)
+
 
 @pytest.fixture
 def Child2_InDB_Schema() -> ChildInDB:
@@ -65,9 +69,10 @@ def Child2_InDB_Schema() -> ChildInDB:
         height=1.70,
         hobby="Bouldering",
         parent_id=1,
-        updated_at=UPDATED_AT_DEFAULT
+        updated_at=UPDATED_AT_DEFAULT,
     )
     return jsonable_encoder(child)
+
 
 @pytest.fixture
 def Child2_InDB_Model(Child2_InDB_Schema) -> ChildModel:

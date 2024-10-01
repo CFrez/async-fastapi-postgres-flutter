@@ -3,6 +3,7 @@ from datetime import datetime
 
 from fastapi_filter.contrib.sqlalchemy import Filter as SQLAlchemyFilter
 
+
 class BaseFilter(SQLAlchemyFilter):
     id: uuid.UUID | None = None
     id__in: list[uuid.UUID] | None = None
@@ -13,4 +14,3 @@ class BaseFilter(SQLAlchemyFilter):
 
     # Default ordering by updated_at with newest first
     order_by: list[str] = ["-updated_at"]
-    

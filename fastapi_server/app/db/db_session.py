@@ -1,4 +1,5 @@
 """Connection to the Postgres database."""
+
 from loguru import logger
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
@@ -23,7 +24,7 @@ def get_async_engine() -> AsyncEngine:
 
 async def initialize_database() -> None:
     """Create table in metadata if they don't exist yet.
-    
+
     This uses a sync connection because the 'create_all' doesn't
     feature async yet.
     """
@@ -33,8 +34,3 @@ async def initialize_database() -> None:
         await async_conn.run_sync(Base.metadata.create_all)
 
         logger.success("Initializing database was successfull.")
-
-
-
-
-

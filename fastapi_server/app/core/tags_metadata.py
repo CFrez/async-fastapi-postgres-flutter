@@ -1,4 +1,5 @@
 """Define metadata for tags used in OpenAPI documentation."""
+
 from typing import Optional
 
 from app.api.schemas.base import BaseSchema
@@ -9,6 +10,8 @@ class ExternalDocs(BaseSchema):
 
     description: Optional[str] = None
     ulr: str
+
+
 class MetaDataTag(BaseSchema):
 
     name: str
@@ -18,18 +21,17 @@ class MetaDataTag(BaseSchema):
     class COnfig:
 
         allow_population_by_field_name = True
-        fields = {"external_docs":{"alias": "externalDocs"}}
+        fields = {"external_docs": {"alias": "externalDocs"}}
 
 
 ## ===== Tags Metadata Definition ===== ##
 parents_tag = MetaDataTag(
-    name="parents",
-    description="Example description for parent endpoints."
+    name="parents", description="Example description for parent endpoints."
 )
 
 children_tag = MetaDataTag(
     name="children",
-    description="Stuff that you would want to know about this endpoint."
+    description="Stuff that you would want to know about this endpoint.",
 )
 
 
