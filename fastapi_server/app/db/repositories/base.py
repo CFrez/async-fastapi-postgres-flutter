@@ -98,7 +98,7 @@ class SQLAlchemyRepository(ABC):
         if not result:
             raise self.not_found_error(id)
         
-        for key, value in obj_update.dict().items():
+        for key, value in obj_update.dict(exclude_unset=True).items():
             setattr(result, key, value)
 
         await self.db.commit()
