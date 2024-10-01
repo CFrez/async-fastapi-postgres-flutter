@@ -3,8 +3,9 @@ from typing import Optional
 
 from fastapi_filter.contrib.sqlalchemy import Filter
 
+from app.db.models.parents import Parent
+
 from .base import BaseFilter
-from ..schemas.parents import ParentInDB
 
 
 class ParentFilter(BaseFilter):
@@ -17,5 +18,5 @@ class ParentFilter(BaseFilter):
     search: Optional[str] = None
 
     class Constants(Filter.Constants):
-        model = ParentInDB
+        model = Parent
         search_model_fields = ["name"]
