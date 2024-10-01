@@ -85,7 +85,7 @@ class SQLAlchemyRepository(ABC):
         result = await self.db.get(self.sqla_model, id)
 
         if not result:
-            raise self.not_found_error(id)
+            raise self.not_found_error(id, "read")
 
         return result
 
@@ -98,7 +98,7 @@ class SQLAlchemyRepository(ABC):
         result = await self.db.get(self.sqla_model, id)
 
         if not result:
-            raise self.not_found_error(id)
+            raise self.not_found_error(id, "update")
 
         for key, value in obj_update.dict(exclude_unset=True).items():
             setattr(result, key, value)
@@ -118,7 +118,7 @@ class SQLAlchemyRepository(ABC):
         result = await self.db.get(self.sqla_model, id)
 
         if not result:
-            raise self.not_found_error(id)
+            raise self.not_found_error(id, "delete")
 
         await self.db.delete(result)
         await self.db.commit()
