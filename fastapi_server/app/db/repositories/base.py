@@ -1,4 +1,5 @@
 """Abstract CRUD Repo definitions."""
+
 from abc import ABC
 from typing import List, TypeVar
 
@@ -20,13 +21,15 @@ CREATE_SCHEMA = TypeVar("CREATE_SCHEMA", bound=BaseSchema)
 UPDATE_SCHEMA = TypeVar("UPDATE_SCHEMA", bound=BaseSchema)
 FILTER_SCHEMA = TypeVar("FILTER_SCHEMA", bound=BaseFilter)
 
+
 ## ===== CRUD Repo ===== ##
 class SQLAlchemyRepository(ABC):
     """Abstract SQLAlchemy repo defining basic database operations.
-    
+
     Basic CRUDL methods used by domain models to interact with the
     database are defined here.
     """
+
     def __init__(
         self,
         db: AsyncSession,
@@ -39,21 +42,20 @@ class SQLAlchemyRepository(ABC):
     # models and schemas object instanziation and validation
     sqla_model = SQLA_MODEL
 
-    create_schema =  CREATE_SCHEMA
+    create_schema = CREATE_SCHEMA
     update_schema = UPDATE_SCHEMA
     filter_schema = FILTER_SCHEMA
 
     def not_found_error(self, id: int, action: str) -> HTTPException:
         """Raise 404 error for missing object."""
         logger.warning(f"No {self.label} with id = {id}.")
-        return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Unable to {action}, no {self.label} found with id = {id}.")
-        
+        return HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Unable to {action}, no {self.label} found with id = {id}.",
+        )
 
     ## ===== Basic crudl Operations ===== ##
-    async def create(
-        self, 
-        obj_new: create_schema
-        ) -> sqla_model | None:
+    async def create(self, obj_new: create_schema) -> sqla_model | None:
         """Commit new object to the database."""
         try:
             db_obj_new = self.sqla_model(**obj_new.dict())
@@ -61,7 +63,7 @@ class SQLAlchemyRepository(ABC):
 
             await self.db.commit()
             await self.db.refresh(db_obj_new)
-            
+
             logger.success(f"Created new {self.label}: {db_obj_new}.")
 
             return db_obj_new
@@ -81,10 +83,10 @@ class SQLAlchemyRepository(ABC):
     ) -> sqla_model | None:
         """Get object by id or 404."""
         result = await self.db.get(self.sqla_model, id)
-        
+
         if not result:
             raise self.not_found_error(id)
-        
+
         return result
 
     async def update(
@@ -97,7 +99,7 @@ class SQLAlchemyRepository(ABC):
 
         if not result:
             raise self.not_found_error(id)
-        
+
         for key, value in obj_update.dict(exclude_unset=True).items():
             setattr(result, key, value)
 
@@ -122,10 +124,12 @@ class SQLAlchemyRepository(ABC):
         await self.db.commit()
 
         # TODO: check if result in string broke once converting to f-string
-        logger.success(f"{self.capitalized_label}: {result} successfully deleted from database.")
+        logger.success(
+            f"{self.capitalized_label}: {result} successfully deleted from database."
+        )
 
         return result
-    
+
     async def filtered_list(
         self,
         list_filter: filter_schema,

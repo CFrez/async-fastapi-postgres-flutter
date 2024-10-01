@@ -1,4 +1,5 @@
 """Endpoints for 'children' ressource."""
+
 import uuid
 from typing import List
 
@@ -12,10 +13,7 @@ from ..filters.children import ChildFilter
 from ..schemas.children import ChildCreate, ChildInDB, ChildWithParent, ChildUpdate
 
 
-router = APIRouter(
-    prefix="/children",
-    tags=["children"]
-)
+router = APIRouter(prefix="/children", tags=["children"])
 
 
 # Basic Parent Endpoints
@@ -28,13 +26,15 @@ async def create(
     result = await child_repo.create(obj_new=child_new)
     return ChildInDB.from_orm(result)
 
+
 @router.get("/{child_id}", response_model=ChildWithParent | None)
 async def read_child(
     child_id: uuid.UUID,
     child_repo: ChildRepository = Depends(get_repository(ChildRepository)),
 ) -> ChildInDB | None:
-     result = await child_repo.read(id=child_id)
-     return ChildWithParent.from_orm(result) if result else None
+    result = await child_repo.read(id=child_id)
+    return ChildWithParent.from_orm(result) if result else None
+
 
 @router.patch("/{child_id}", response_model=ChildInDB)
 async def update_child(
@@ -44,7 +44,8 @@ async def update_child(
 ) -> ChildInDB:
     result = await child_repo.update(id=child_id, obj_update=child_update)
     return ChildInDB.from_orm(result)
-    
+
+
 @router.delete("/{child_id}", response_model=ChildInDB)
 async def delete_child(
     child_id: uuid.UUID,
@@ -53,9 +54,10 @@ async def delete_child(
     result = await child_repo.delete(id=child_id)
     return ChildInDB.from_orm(result)
 
+
 @router.get("/", response_model=List[ChildInDB])
 async def list_children(
-    child_filter = FilterDepends(ChildFilter),
+    child_filter=FilterDepends(ChildFilter),
     child_repo: ChildRepository = Depends(get_repository(ChildRepository)),
 ) -> List[ChildInDB]:
     result = await child_repo.filtered_list(list_filter=child_filter)

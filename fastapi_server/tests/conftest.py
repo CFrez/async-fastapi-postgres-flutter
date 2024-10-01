@@ -2,6 +2,7 @@
 
 These fixtures will run before tests are involked with pytest.
 """
+
 from glob import glob
 import os
 from typing import Generator, List, TypeVar
@@ -38,7 +39,7 @@ settings = get_app_settings()
 # make "trio" warnings go away :)
 @pytest.fixture
 def anyio_backend():
-    return 'asyncio'
+    return "asyncio"
 
 
 # allow fixtures that are in \tests\fixtures folder to be included in conftest
@@ -46,10 +47,10 @@ def refactor(string: str) -> str:
 
     return string.replace("/", ".").replace("\\", ".").replace(".py", "")
 
+
 pytest_plugins = [
     refactor(fixture) for fixture in glob("tests/fixtures/*.py") if "__" not in fixture
 ]
-
 
 
 ## ===== Database Setup ===== ##
@@ -76,13 +77,15 @@ async def seed_db(
 async def apply_migrations(seed_db) -> Generator:
     """Apply migrations at beginning and end of testing session."""
     warnings.filterwarnings("ignore", category=DeprecationWarning)
-    os.environ["TESTING"] = "1"     # tells alembics .env to use test database in migrations
+    os.environ["TESTING"] = (
+        "1"  # tells alembics .env to use test database in migrations
+    )
     config = Config("alembic.ini")
 
     async_engine = get_async_engine()
 
     TEST_DATABASE = f"{async_engine.url}_test"
-  
+
     async with async_engine.connect() as async_conn:
 
         # create a test db
@@ -96,14 +99,14 @@ async def apply_migrations(seed_db) -> Generator:
             config,
             message="Revision before test",
             autogenerate=True,
-            )
+        )
         # apply migrations
         await alembic.command.upgrade(config, "head")
         # seed the database
         async_session = sessionmaker(
-        async_engine, 
-        expire_on_commit=False, 
-        class_=AsyncSession,
+            async_engine,
+            expire_on_commit=False,
+            class_=AsyncSession,
         )
         async with async_session() as session:
             async with session.begin():
@@ -115,7 +118,6 @@ async def apply_migrations(seed_db) -> Generator:
         await async_conn.run_sync(Base.metadata.drop_all)
 
 
-
 ## ===== SQLAlchemy Setup ===== ##
 # =========================================================================== #
 @pytest.fixture
@@ -123,12 +125,12 @@ async def session():
     """SqlAlchemy testing suite.
 
     Using ORM while rolling back changes after commit to have independant test cases.
-    
+
     Implementation of "Joining a Session into an External Transaction (such as for test suite)"
-    recipe from sqlalchemy docs : 
+    recipe from sqlalchemy docs :
     https://docs.sqlalchemy.org/en/14/orm/session_transaction.html#joining-a-session-into-an-external-transaction-such-as-for-test-suites
-    
-    Inspiration also found on: 
+
+    Inspiration also found on:
     https://github.com/sqlalchemy/sqlalchemy/issues/5811#issuecomment-756269881
     """
     async_test_engine = get_async_engine()
@@ -136,11 +138,8 @@ async def session():
 
         await conn.begin()
         await conn.begin_nested()
-        
-        async_session = AsyncSession(
-            conn,
-            expire_on_commit=False
-            )
+
+        async_session = AsyncSession(conn, expire_on_commit=False)
 
         @event.listens_for(async_session.sync_session, "after_transaction_end")
         def end_savepoint(session, transaction):
@@ -155,7 +154,6 @@ async def session():
         await conn.rollback()
 
 
-
 ## ===== FastAPI Setup ===== ##
 # =========================================================================== #
 @pytest.fixture()
@@ -164,20 +162,17 @@ async def test_app(session) -> FastAPI:
 
     async def test_get_database() -> Generator:
         yield session
-                
+
     app.dependency_overrides[get_async_session] = test_get_database
 
     return app
-    
+
 
 @pytest.fixture
-async def async_test_client(test_app: FastAPI) -> FastAPI:    
+async def async_test_client(test_app: FastAPI) -> FastAPI:
     """Test client that will be used to make requests against our endpoints."""
     async with LifespanManager(test_app):
-        async with AsyncClient(
-            app=test_app, 
-            base_url="http://testserver"
-        ) as ac:
+        async with AsyncClient(app=test_app, base_url="http://testserver") as ac:
             try:
 
                 yield ac

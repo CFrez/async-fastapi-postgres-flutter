@@ -1,4 +1,5 @@
 """Endpoints for 'parent' ressource."""
+
 import uuid
 from typing import List
 
@@ -10,14 +11,12 @@ from app.db.repositories.parents import ParentRepository
 from app.core.tags_metadata import parents_tag
 
 from ..schemas.parents import ParentCreate, ParentInDB, ParentUpdate, ParentWithChildren
+
 # from ..schemas.children import ChildInDB
 from ..filters.parents import ParentFilter
 
 
-router = APIRouter(
-    prefix="/parents",
-    tags=[parents_tag.name]
-)
+router = APIRouter(prefix="/parents", tags=[parents_tag.name])
 
 
 # Basic Parent Endpoints
@@ -27,7 +26,7 @@ async def create_parent(
     parent_new: ParentCreate,
     parent_repo: ParentRepository = Depends(get_repository(ParentRepository)),
 ) -> ParentInDB:
-    result =  await parent_repo.create(obj_new=parent_new)
+    result = await parent_repo.create(obj_new=parent_new)
     return ParentInDB.from_orm(result)
 
 
@@ -61,7 +60,7 @@ async def delete_parent(
 
 @router.get("/", response_model=List[ParentInDB])
 async def list_parents(
-    parent_filter = FilterDepends(ParentFilter),
+    parent_filter=FilterDepends(ParentFilter),
     parent_repo: ParentRepository = Depends(get_repository(ParentRepository)),
 ) -> List[ParentInDB]:
     result = await parent_repo.filtered_list(parent_filter)

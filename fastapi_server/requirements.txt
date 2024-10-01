@@ -21,3 +21,6 @@ asgi-lifespan==1.0.1
 
 # settings
 python-dotenv==0.20.0
+
+# formatting
+black==24.8.0

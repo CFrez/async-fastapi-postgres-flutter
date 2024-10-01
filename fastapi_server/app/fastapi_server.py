@@ -46,12 +46,12 @@ def get_app() -> FastAPI:
 app = get_app()
 
 
-
 # ===== App Info Endpoints ===== #
 @app.get("/")
 async def root():
 
     return {"message": "OK"}
+
 
 @app.get("/settings")
 async def get_app_info():
@@ -64,6 +64,7 @@ async def get_app_info():
     }
 
     return info
+
 
 @app.get("/logger_test")
 async def test_logger():
