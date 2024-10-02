@@ -17,9 +17,10 @@ class ChildFilter(BaseFilter):
     hobby: Optional[str] = None
     parent_id: Optional[uuid.UUID] = None
 
-    order_by: list[str] = ["name"]
+    order_by: list[str] = ["name"] # Alphabetical by name
     search: Optional[str] = None
 
     class Constants(Filter.Constants):
         model = Child
+        # TODO: Add searching by parent's name?
         search_model_fields = ["name"]
