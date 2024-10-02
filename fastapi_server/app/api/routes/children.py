@@ -14,7 +14,7 @@ from ..schemas.children import ChildCreate, ChildInDB, ChildUpdate
 
 
 router = APIRouter(prefix="/children", tags=["children"])
-ChildRepository.create_routes(router)
+# ChildRepository.create_routes(router)
 
 
 @router.post("/", response_model=ChildInDB, status_code=status.HTTP_201_CREATED)
