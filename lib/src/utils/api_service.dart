@@ -4,7 +4,7 @@ const apiBaseURL = 'http://localhost:8000/api/';
 
 class ApiService {
   String _url (String url) {
-    return '$apiBaseURL$url';
+    return '$apiBaseURL$url/';
   }
 
   Future<List<dynamic>> get(String url, [Map<String, dynamic> params = const {}]) async {

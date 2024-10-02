@@ -5,7 +5,7 @@ All logic related to the child entity is defined and grouped here.
 
 from app.db.models.children import Child as ChildModel
 from app.db.repositories.base import SQLAlchemyRepository
-from app.api.schemas.children import ChildCreate, ChildUpdate
+from app.api.schemas.children import ChildCreate, ChildUpdate, ChildInDB
 from app.api.filters.children import ChildFilter
 
 
@@ -23,3 +23,4 @@ class ChildRepository(SQLAlchemyRepository):
     create_schema = ChildCreate
     update_schema = ChildUpdate
     filter_schema = ChildFilter
+    response_schema = ChildInDB

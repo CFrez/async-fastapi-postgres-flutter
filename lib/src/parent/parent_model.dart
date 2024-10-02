@@ -12,13 +12,13 @@ class Parent {
 
   Parent.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    birthdate = json['birthdate'];
+    birthdate = DateTime.parse(json['birthdate']);
   }
 
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'birthdate': birthdate,
+      'birthdate': birthdate.toString(),
     };
   }
 }

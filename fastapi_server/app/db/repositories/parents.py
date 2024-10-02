@@ -10,9 +10,9 @@ All logic related to the parent entity is defined and grouped here.
 
 from app.db.models.parents import Parent as ParentModel
 
-# from app.db.models.children import Child as ChildModel
+from app.db.models.children import Child as ChildModel
 from app.db.repositories.base import SQLAlchemyRepository
-from app.api.schemas.parents import ParentCreate, ParentUpdate
+from app.api.schemas.parents import ParentCreate, ParentUpdate, ParentInDB
 from app.api.filters.parents import ParentFilter
 
 
@@ -30,6 +30,7 @@ class ParentRepository(SQLAlchemyRepository):
     create_schema = ParentCreate
     update_schema = ParentUpdate
     filter_schema = ParentFilter
+    response_schema = ParentInDB
 
     # Testing relationship patterns are working
     # async def get_children_by_parent_id(

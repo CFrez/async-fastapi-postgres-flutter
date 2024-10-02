@@ -20,6 +20,7 @@ SQLA_MODEL = TypeVar("SQLA_MODEL", bound=BaseModel)
 CREATE_SCHEMA = TypeVar("CREATE_SCHEMA", bound=BaseSchema)
 UPDATE_SCHEMA = TypeVar("UPDATE_SCHEMA", bound=BaseSchema)
 FILTER_SCHEMA = TypeVar("FILTER_SCHEMA", bound=BaseFilter)
+RESPONSE_SCHEMA = TypeVar("UPDATE_SCHEMA", bound=BaseSchema)
 
 
 ## ===== CRUDL Repo ===== ##
@@ -45,8 +46,11 @@ class SQLAlchemyRepository(ABC):
     create_schema = CREATE_SCHEMA
     update_schema = UPDATE_SCHEMA
     filter_schema = FILTER_SCHEMA
+    response_schema = RESPONSE_SCHEMA
 
-    def not_found_error(self, id: int, action: str, entity: str = label) -> HTTPException:
+    def not_found_error(
+        self, id: int, action: str, entity: str = label
+    ) -> HTTPException:
         """Raise 404 error for missing object."""
         logger.warning(f"No {entity} with id = {id}.")
         return HTTPException(
@@ -55,7 +59,7 @@ class SQLAlchemyRepository(ABC):
         )
 
     ## ===== Basic crudl Operations ===== ##
-    async def create(self, obj_new: create_schema) -> sqla_model | None:
+    async def create(self, obj_new: create_schema) -> response_schema | None:
         """Commit new object to the database."""
         try:
             db_obj_new = self.sqla_model(**obj_new.dict())
@@ -66,7 +70,7 @@ class SQLAlchemyRepository(ABC):
 
             logger.success(f"Created new {self.label}: {db_obj_new}.")
 
-            return db_obj_new
+            return self.response_schema.model_validate(db_obj_new)
 
         except Exception as e:
 
@@ -80,20 +84,20 @@ class SQLAlchemyRepository(ABC):
     async def read(
         self,
         id: int,
-    ) -> sqla_model | None:
+    ) -> response_schema | None:
         """Get object by id or 404."""
         result = await self.db.get(self.sqla_model, id)
 
         if not result:
             raise self.not_found_error(id, "read")
 
-        return result
+        return self.response_schema.model_validate(result)
 
     async def update(
         self,
         id: int,
         obj_update: update_schema,
-    ) -> sqla_model | None:
+    ) -> response_schema | None:
         """Update object in db by id or 404."""
         result = await self.db.get(self.sqla_model, id)
 
@@ -108,12 +112,12 @@ class SQLAlchemyRepository(ABC):
 
         logger.success(f"Updated {self.label}: {result}.")
 
-        return result
+        return self.response_schema.model_validate(result)
 
     async def delete(
         self,
         id: int,
-    ) -> sqla_model | None:
+    ) -> response_schema | None:
         """Delete object from db by id or 404."""
         result = await self.db.get(self.sqla_model, id)
 
@@ -128,15 +132,26 @@ class SQLAlchemyRepository(ABC):
             f"{self.capitalized_label}: {result} successfully deleted from database."
         )
 
-        return result
+        return self.response_schema.model_validate(result)
 
     async def filter_list(
         self,
         list_filter: filter_schema,
-    ) -> List[sqla_model] | None:
+    ) -> List[response_schema] | None:
         """Get all filtered and sorted objects from the database."""
         query = select(self.sqla_model)
         query = list_filter.filter(query)
         query = list_filter.sort(query)
         result = await self.db.execute(query)
-        return result.scalars().all()
+        result = result.scalars().all()
+        return [self.response_schema.model_validate(obj) for obj in result]
+
+    def create_routes(self, router):
+        """Create CRUDL routes for the repository."""
+        router.post("/", response_model=self.response_schema, status_code=status.HTTP_201_CREATED)(
+            self.create
+        )
+        router.get("/{id}", response_model=self.response_schema)(self.read)
+        router.patch("/{id}", response_model=self.response_schema)(self.update)
+        router.delete("/{id}", response_model=self.response_schema)(self.delete)
+        router.get("/", response_model=List[self.response_schema])(self.filter_list)
