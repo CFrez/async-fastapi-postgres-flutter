@@ -46,12 +46,12 @@ class SQLAlchemyRepository(ABC):
     update_schema = UPDATE_SCHEMA
     filter_schema = FILTER_SCHEMA
 
-    def not_found_error(self, id: int, action: str) -> HTTPException:
+    def not_found_error(self, id: int, action: str, entity: str = label) -> HTTPException:
         """Raise 404 error for missing object."""
-        logger.warning(f"No {self.label} with id = {id}.")
+        logger.warning(f"No {entity} with id = {id}.")
         return HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Unable to {action}, no {self.label} found with id = {id}.",
+            detail=f"Unable to {action}, no {entity} found with id = {id}.",
         )
 
     ## ===== Basic crudl Operations ===== ##
