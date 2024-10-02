@@ -17,7 +17,7 @@ class ChildFilter(BaseFilter):
     hobby: Optional[str] = None
     parent_id: Optional[uuid.UUID] = None
 
-    order_by: list[str] = ["name"] # Alphabetical by name
+    order_by: list[str] = ["name"]  # Alphabetical by name
     search: Optional[str] = None
 
     class Constants(Filter.Constants):
