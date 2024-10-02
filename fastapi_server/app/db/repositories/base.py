@@ -130,7 +130,7 @@ class SQLAlchemyRepository(ABC):
 
         return result
 
-    async def filtered_list(
+    async def filter_list(
         self,
         list_filter: filter_schema,
     ) -> List[sqla_model] | None:
