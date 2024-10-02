@@ -22,7 +22,7 @@ UPDATE_SCHEMA = TypeVar("UPDATE_SCHEMA", bound=BaseSchema)
 FILTER_SCHEMA = TypeVar("FILTER_SCHEMA", bound=BaseFilter)
 
 
-## ===== CRUD Repo ===== ##
+## ===== CRUDL Repo ===== ##
 class SQLAlchemyRepository(ABC):
     """Abstract SQLAlchemy repo defining basic database operations.
 
