@@ -28,7 +28,7 @@ async def create(
     return ChildInDB.model_validate(result)
 
 
-@router.get("/{child_id}", response_model=ChildWithParent | None)
+@router.get("/{child_id}/", response_model=ChildWithParent | None)
 async def read_child(
     child_id: uuid.UUID,
     child_repo: ChildRepository = Depends(get_repository(ChildRepository)),
@@ -37,7 +37,7 @@ async def read_child(
     return ChildWithParent.model_validate(result) if result else None
 
 
-@router.patch("/{child_id}", response_model=ChildInDB)
+@router.patch("/{child_id}/", response_model=ChildInDB)
 async def update_child(
     child_id: uuid.UUID,
     child_update: ChildUpdate,
@@ -47,7 +47,7 @@ async def update_child(
     return ChildInDB.model_validate(result)
 
 
-@router.delete("/{child_id}", response_model=ChildInDB)
+@router.delete("/{child_id}/", response_model=ChildInDB)
 async def delete_child(
     child_id: uuid.UUID,
     child_repo: ChildRepository = Depends(get_repository(ChildRepository)),

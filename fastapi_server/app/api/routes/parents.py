@@ -30,7 +30,7 @@ async def create_parent(
     return ParentInDB.model_validate(result)
 
 
-@router.get("/{parent_id}", response_model=ParentWithChildren)
+@router.get("/{parent_id}/", response_model=ParentWithChildren)
 async def read_parent(
     parent_id: uuid.UUID,
     parent_repo: ParentRepository = Depends(get_repository(ParentRepository)),
@@ -39,7 +39,7 @@ async def read_parent(
     return ParentWithChildren.model_validate(result)
 
 
-@router.patch("/{parent_id}", response_model=ParentInDB)
+@router.patch("/{parent_id}/", response_model=ParentInDB)
 async def update_parent(
     parent_id: uuid.UUID,
     parent_update: ParentUpdate,
@@ -49,7 +49,7 @@ async def update_parent(
     return ParentInDB.model_validate(result)
 
 
-@router.delete("/{parent_id}", response_model=ParentInDB)
+@router.delete("/{parent_id}/", response_model=ParentInDB)
 async def delete_parent(
     parent_id: uuid.UUID,
     parent_repo: ParentRepository = Depends(get_repository(ParentRepository)),
