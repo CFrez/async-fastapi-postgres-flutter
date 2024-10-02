@@ -1,6 +1,6 @@
-# family
+# WIP Family App
 
-A new Flutter project.
+This is a project using for learning Flutter and assembling it with the backend.
 
 ## Getting Started
 
