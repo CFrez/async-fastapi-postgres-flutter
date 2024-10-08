@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:family/main.dart';
+import 'package:family/src/parent/parent_detail_screen.dart';
 import 'package:family/src/parent/parent_model.dart';
 import 'package:family/src/parent/parent_form_provider.dart';
 import 'package:family/src/parent/parent_service.dart';
-import 'package:family/src/parent/parents_list_screen.dart';
 
 class ParentCard extends StatelessWidget {
   final Parent parent;
@@ -36,12 +36,7 @@ class ParentCard extends StatelessWidget {
               icon: Icon(Icons.edit, size: 18),
               onPressed: () {
                 getIt<ParentFormProvider>().setParent(parent);
-                Navigator.of(context).pushNamed(
-                  ParentsListScreen.routeName, 
-                  arguments:{
-                    'parent': parent,
-                  }
-                );
+                Navigator.of(context).pushNamed(ParentDetailScreen.routeName);
               },
             ),
             Expanded(

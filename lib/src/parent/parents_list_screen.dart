@@ -27,7 +27,7 @@ class _ParentsListScreenState extends State<ParentsListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Parents&apos; List'),
+        title: const Text('Parent List'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

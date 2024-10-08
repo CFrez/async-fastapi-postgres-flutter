@@ -12,12 +12,13 @@ class ParentsService extends ApiService {
 
   Future<List<Parent>> list() async {
     final data = await get(parentsBaseUrl);
+    print('data: $data');
     parents = data.map((parent) => Parent.fromJson(parent)).toList();
-    return parents; 
+    return parents;
   }
 
-  Future<Parent> create(String name) async {
-    final data = await post(parentsBaseUrl, {'name': name});
+  Future<Parent> create(Parent parent) async {
+    final data = await post(parentsBaseUrl, parent.toJson());
     // add parent vs refetch?
     final groceryItem = Parent.fromJson(data);
     getIt<ParentsListProvider>().fetchItems();
@@ -35,7 +36,6 @@ class ParentsService extends ApiService {
     await super.delete('$parentsBaseUrl/${parent.id}');
     getIt<ParentsListProvider>().fetchItems();
   }
-
 }
 
 ParentsService _export() {

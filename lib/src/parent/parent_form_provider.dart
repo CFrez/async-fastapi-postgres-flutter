@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:family/src/parent/parent_model.dart';
 import 'package:family/src/parent/parent_service.dart';
@@ -13,6 +14,7 @@ abstract class ParentFormProvider extends ChangeNotifier {
   Parent get parent;
   bool get isProcessing;
   GlobalKey<FormState> get form;
+  String get birthdate;
 
   // Operations
   void clearParent();
@@ -26,6 +28,7 @@ abstract class ParentFormProvider extends ChangeNotifier {
 
   // Setters
   void setName(String name);
+  void setBirthdate(DateTime birthdate);
 }
 
 class ParentFormProviderImpl extends ParentFormProvider {
@@ -33,6 +36,8 @@ class ParentFormProviderImpl extends ParentFormProvider {
 
   void handleUpdate() {
     notifyListeners();
+    print(
+        'ParentFormProviderImpl updated, ${_parent.name}, ${_parent.birthdate}');
   }
 
   @override
@@ -43,6 +48,10 @@ class ParentFormProviderImpl extends ParentFormProvider {
 
   @override
   GlobalKey<FormState> get form => _form;
+
+  @override
+  String get birthdate =>
+      _parent.birthdate != null ? parent.formatDate(_parent.birthdate!) : '';
 
   @override
   void clearParent() {
@@ -56,7 +65,7 @@ class ParentFormProviderImpl extends ParentFormProvider {
     handleUpdate();
   }
 
-    @override
+  @override
   void setParent(Parent parent) {
     _parent = parent;
     handleUpdate();
@@ -69,12 +78,10 @@ class ParentFormProviderImpl extends ParentFormProvider {
       return null;
     }
     _isProcessing = true;
-    await Future.delayed(const Duration(milliseconds: 300));
-    handleUpdate();
     final isNew = _parent.id == null;
     final savedParent = isNew
-      ? await parentsService.create(_parent.name)
-      : await parentsService.update(_parent);
+        ? await parentsService.create(_parent)
+        : await parentsService.update(_parent);
     _isProcessing = false;
     // ToastService.success('${savedParent.name} ${isNew ? 'added' : 'updated'}');
     return savedParent;
@@ -100,6 +107,12 @@ class ParentFormProviderImpl extends ParentFormProvider {
   @override
   void setName(String name) {
     _parent.name = name;
+    handleUpdate();
+  }
+
+  @override
+  void setBirthdate(DateTime birthdate) {
+    _parent.birthdate = birthdate;
     handleUpdate();
   }
 }
