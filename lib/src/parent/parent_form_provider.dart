@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'package:family/src/parent/parent_model.dart';
 import 'package:family/src/parent/parent_service.dart';
@@ -36,8 +35,6 @@ class ParentFormProviderImpl extends ParentFormProvider {
 
   void handleUpdate() {
     notifyListeners();
-    print(
-        'ParentFormProviderImpl updated, ${_parent.name}, ${_parent.birthdate}');
   }
 
   @override

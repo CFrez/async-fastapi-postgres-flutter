@@ -1,8 +1,10 @@
-import 'package:family/src/parent/parent_detail_screen.dart';
-import 'package:family/src/parent/parents_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'package:family/src/parent/parent_detail_screen.dart';
+import 'package:family/src/parent/parents_list_screen.dart';
 
 import 'settings/settings_controller.dart';
 
@@ -59,7 +61,22 @@ class MyApp extends StatelessWidget {
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the
           // SettingsController to display the correct theme.
-          theme: ThemeData(),
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue,
+            ),
+            textTheme: TextTheme(
+              displayLarge: const TextStyle(
+                fontSize: 72,
+                fontWeight: FontWeight.bold,
+              ),
+              titleLarge: GoogleFonts.josefinSans(
+                fontSize: 30,
+              ),
+              bodyMedium: GoogleFonts.inter(),
+              displaySmall: GoogleFonts.sourceSans3(),
+            ),
+          ),
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
 
@@ -84,11 +101,11 @@ class MyApp extends StatelessWidget {
           //   );
           // },
 
-            // vs Routes.... 
-            routes: {
-              '/': (ctx) => ParentsListScreen(),
-              ParentDetailScreen.routeName: (ctx) => ParentDetailScreen(),
-            },
+          // vs Routes....
+          routes: {
+            '/': (ctx) => ParentsListScreen(),
+            ParentDetailScreen.routeName: (ctx) => ParentDetailScreen(),
+          },
         );
       },
     );

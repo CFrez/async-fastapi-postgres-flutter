@@ -1,16 +1,15 @@
 import 'package:intl/intl.dart';
 
-// import 'package:family/src/children/child_model.dart';
-
-class Parent {
+class Child {
   String? id;
   DateTime? createdAt;
   DateTime? updatedAt;
   String name = '';
   DateTime? birthdate;
-  // List<Child> children = [];
+  String? hobby;
+  int? parentId;
 
-  Parent() {
+  Child() {
     // Empty constructor for initialization
   }
 
@@ -18,12 +17,14 @@ class Parent {
     return DateFormat('MM-dd-yyyy').format(date);
   }
 
-  Parent.fromJson(Map<String, dynamic> json) {
+  Child.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     createdAt = DateTime.parse(json['created_at']);
     updatedAt = DateTime.parse(json['updated_at']);
     name = json['name'];
     birthdate = DateTime.parse(json['birthdate']);
+    hobby = json['hobby'];
+    parentId = json['parent_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -34,6 +35,8 @@ class Parent {
       'name': name,
       'birthdate':
           birthdate != null ? DateFormat('yyyy-MM-dd').format(birthdate!) : '',
+      'hobby': hobby,
+      'parent_id': parentId,
     };
   }
 }

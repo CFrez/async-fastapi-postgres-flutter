@@ -95,7 +95,7 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
                                   formProvider.parent.formatDate(pickedDate);
                               formProvider.setBirthdate(pickedDate);
                             } else {
-                              print("Date is not selected");
+                              print('Date is not selected');
                             }
                           }),
                     )
