@@ -1,24 +1,24 @@
+import 'package:family/src/children/children_service.dart';
+import 'package:family/src/children/providers/child_form_provider.dart';
+import 'package:family/src/children/screens/child_detail_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'package:family/src/children/child_model.dart';
 import 'package:family/main.dart';
-import 'package:family/src/parent/screens/parent_detail_screen.dart';
-import 'package:family/src/parent/parent_model.dart';
-import 'package:family/src/parent/providers/parent_form_provider.dart';
-import 'package:family/src/parent/parents_service.dart';
 
-class ParentCard extends StatelessWidget {
-  final Parent parent;
+class ChildCard extends StatelessWidget {
+  final Child child;
 
-  const ParentCard({super.key, required this.parent});
+  const ChildCard({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key(parent.id.toString()),
+      key: Key(child.id.toString()),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
         if (direction == DismissDirection.endToStart) {
-          parentsService.deleteParent(parent);
+          childrenService.deleteChild(child);
         }
       },
       background: Container(
@@ -34,12 +34,12 @@ class ParentCard extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.edit, size: 18),
               onPressed: () {
-                getIt<ParentFormProvider>().setParent(parent);
-                Navigator.of(context).pushNamed(ParentDetailScreen.routeName);
+                getIt<ChildFormProvider>().setChild(child);
+                Navigator.of(context).pushNamed(ChildDetailScreen.routeName);
               },
             ),
             Expanded(
-              child: Text(parent.name),
+              child: Text(child.name),
             ),
           ],
         ),

@@ -2,9 +2,9 @@ import 'package:family/src/parent/components/parents_list.dart';
 import 'package:flutter/material.dart';
 
 import 'package:family/main.dart';
-import 'package:family/src/parent/parent_form_provider.dart';
-import 'package:family/src/parent/parents_list_provider.dart';
-import 'package:family/src/parent/parent_detail_screen.dart';
+import 'package:family/src/parent/providers/parent_form_provider.dart';
+import 'package:family/src/parent/providers/parents_list_provider.dart';
+import 'package:family/src/parent/screens/parent_detail_screen.dart';
 
 class ParentsListScreen extends StatefulWidget {
   static const routeName = '/';

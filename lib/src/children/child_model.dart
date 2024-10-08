@@ -7,7 +7,7 @@ class Child {
   String name = '';
   DateTime? birthdate;
   String? hobby;
-  int? parentId;
+  String? parentId;
 
   Child() {
     // Empty constructor for initialization

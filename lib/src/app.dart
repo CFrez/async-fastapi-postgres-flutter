@@ -1,10 +1,11 @@
+import 'package:family/src/children/screens/child_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:family/src/parent/parent_detail_screen.dart';
-import 'package:family/src/parent/parents_list_screen.dart';
+import 'package:family/src/parent/screens/parent_detail_screen.dart';
+import 'package:family/src/parent/screens/parents_list_screen.dart';
 
 import 'settings/settings_controller.dart';
 
@@ -110,6 +111,7 @@ class MyApp extends StatelessWidget {
           routes: {
             '/': (ctx) => ParentsListScreen(),
             ParentDetailScreen.routeName: (ctx) => ParentDetailScreen(),
+            ChildDetailScreen.routeName: (ctx) => ChildDetailScreen(),
           },
         );
       },

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:family/src/components/empty_list_indicator.dart';
 import 'package:family/src/parent/components/parent_card.dart';
 import 'package:family/main.dart';
-import 'package:family/src/parent/parents_list_provider.dart';
+import 'package:family/src/parent/providers/parents_list_provider.dart';
 
 class ParentsList extends StatefulWidget {
   final Function handleAddParent;
@@ -37,7 +37,7 @@ class _ParentsListState extends State<ParentsList> {
   Widget build(BuildContext context) {
     final parents = listProvider.parents;
 
-    if (!listProvider.isLoading) {
+    if (listProvider.isLoading) {
       return const Center(
         child: CircularProgressIndicator(),
       );

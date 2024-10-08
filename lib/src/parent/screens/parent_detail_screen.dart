@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:family/main.dart';
-import 'package:family/src/parent/parent_form_provider.dart';
+import 'package:family/src/children/components/children_list.dart';
+import 'package:family/src/parent/providers/parent_form_provider.dart';
+import 'package:family/src/components/birthday_input.dart';
 
 class ParentDetailScreen extends StatefulWidget {
   static const routeName = '/detail';
@@ -14,7 +16,6 @@ class ParentDetailScreen extends StatefulWidget {
 
 class _ParentDetailScreenState extends State<ParentDetailScreen> {
   final formProvider = getIt<ParentFormProvider>();
-  final TextEditingController dateController = TextEditingController();
 
   @override
   void initState() {
@@ -22,7 +23,6 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
     formProvider.addListener(() {
       setStateIfMounted(() {});
     });
-    dateController.text = formProvider.birthdate;
   }
 
   void setStateIfMounted(f) {
@@ -80,28 +80,17 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: TextField(
-                          controller: dateController,
-                          decoration: const InputDecoration(
-                              icon: Icon(Icons.calendar_today),
-                              labelText: 'Birthday'),
-                          readOnly: true, // when true user cannot edit text
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: formProvider.parent.birthdate ??
-                                    DateTime.now(),
-                                firstDate: DateTime(1900),
-                                lastDate: DateTime.now());
-                            if (pickedDate != null) {
-                              dateController.text =
-                                  formProvider.parent.formatDate(pickedDate);
-                              formProvider.setBirthdate(pickedDate);
-                            } else {
-                              print('Date is not selected');
-                            }
-                          }),
-                    )
+                      child: BirthdayInput(
+                        birthdate: formProvider.parent.birthdate,
+                        onChange: formProvider.setBirthdate,
+                      ),
+                    ),
+                    Stack(
+                      children: [
+                        Text('Children'),
+                        ChildrenList(children: formProvider.parent.children),
+                      ],
+                    ),
                   ],
                 ),
                 if (formProvider.isProcessing)

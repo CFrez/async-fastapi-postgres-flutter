@@ -1,5 +1,6 @@
-import 'package:family/src/parent/parent_form_provider.dart';
-import 'package:family/src/parent/parents_list_provider.dart';
+import 'package:family/src/children/providers/child_form_provider.dart';
+import 'package:family/src/parent/providers/parent_form_provider.dart';
+import 'package:family/src/parent/providers/parents_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -35,6 +36,10 @@ void setupSingletons() {
   );
   getIt.registerSingleton<ParentFormProvider>(
     ParentFormProviderImpl(),
+    signalsReady: true,
+  );
+  getIt.registerSingleton<ChildFormProvider>(
+    ChildFormProviderImpl(),
     signalsReady: true,
   );
 }

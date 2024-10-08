@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:family/src/parent/parent_model.dart';
-import 'package:family/src/parent/parent_service.dart';
+import 'package:family/src/parent/parents_service.dart';
 
 abstract class ParentFormProvider extends ChangeNotifier {
   Parent _parent = Parent();
@@ -13,11 +13,9 @@ abstract class ParentFormProvider extends ChangeNotifier {
   Parent get parent;
   bool get isProcessing;
   GlobalKey<FormState> get form;
-  String get birthdate;
 
   // Operations
   void clearParent();
-  void loadParent(Parent parent);
   void setParent(Parent parent);
   Future<Parent?> saveParent();
   Future<void> deleteParent(Parent parent);
@@ -47,18 +45,8 @@ class ParentFormProviderImpl extends ParentFormProvider {
   GlobalKey<FormState> get form => _form;
 
   @override
-  String get birthdate =>
-      _parent.birthdate != null ? parent.formatDate(_parent.birthdate!) : '';
-
-  @override
   void clearParent() {
     _parent = Parent();
-    handleUpdate();
-  }
-
-  @override
-  void loadParent(Parent parent) {
-    _parent = parent;
     handleUpdate();
   }
 

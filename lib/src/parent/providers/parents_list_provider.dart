@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:family/src/parent/parent_model.dart';
-import 'package:family/src/parent/parent_service.dart';
+import 'package:family/src/parent/parents_service.dart';
 
 abstract class ParentsListProvider extends ChangeNotifier {
   bool isLoading = true;
@@ -16,7 +16,7 @@ abstract class ParentsListProvider extends ChangeNotifier {
 }
 
 class ParentsListProviderImpl extends ParentsListProvider {
-  ParentsListProviderImpl(){
+  ParentsListProviderImpl() {
     _init();
   }
 
@@ -26,11 +26,11 @@ class ParentsListProviderImpl extends ParentsListProvider {
 
   @override
   Future<void> fetchItems() async {
-    isLoading = false;
+    isLoading = true;
     setItems([]);
     final parents = await parentsService.list();
     setItems(parents);
-    isLoading = true;
+    isLoading = false;
     notifyListeners();
   }
 

@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-// import 'package:family/src/children/child_model.dart';
+import 'package:family/src/children/child_model.dart';
 
 class Parent {
   String? id;
@@ -8,14 +8,10 @@ class Parent {
   DateTime? updatedAt;
   String name = '';
   DateTime? birthdate;
-  // List<Child> children = [];
+  List<Child> children = [];
 
   Parent() {
     // Empty constructor for initialization
-  }
-
-  String formatDate(DateTime date) {
-    return DateFormat('MM-dd-yyyy').format(date);
   }
 
   Parent.fromJson(Map<String, dynamic> json) {
@@ -24,6 +20,12 @@ class Parent {
     updatedAt = DateTime.parse(json['updated_at']);
     name = json['name'];
     birthdate = DateTime.parse(json['birthdate']);
+    if (json['children'] != null) {
+      children = [];
+      json['children'].forEach((child) {
+        children.add(Child.fromJson(child));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
