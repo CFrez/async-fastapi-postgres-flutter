@@ -1,10 +1,6 @@
 import 'package:family/src/children/child_model.dart';
 import 'package:family/src/children/components/child_card.dart';
-import 'package:family/src/children/providers/child_form_provider.dart';
-import 'package:family/src/children/screens/child_detail_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'package:family/main.dart';
 
 class ChildrenList extends StatefulWidget {
   final List<Child> children;
