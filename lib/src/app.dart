@@ -71,10 +71,15 @@ class MyApp extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
               titleLarge: GoogleFonts.josefinSans(
-                fontSize: 30,
+                fontSize: 28,
               ),
               bodyMedium: GoogleFonts.inter(),
               displaySmall: GoogleFonts.sourceSans3(),
+            ),
+            appBarTheme: AppBarTheme(
+              // For some reason the app bar is not defaulting to having a background color.
+              backgroundColor: Colors.blue[900],
+              foregroundColor: Colors.white,
             ),
           ),
           darkTheme: ThemeData.dark(),

@@ -51,7 +51,10 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
           actions: [
             TextButton(
               onPressed: _handleSave,
-              child: Text('Save'),
+              child: Text('Save',
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
             )
           ],
         ),
