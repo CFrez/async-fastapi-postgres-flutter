@@ -8,9 +8,8 @@ import 'package:family/src/parent/parent_service.dart';
 
 class ParentCard extends StatelessWidget {
   final Parent parent;
-  final Function onUpdate;
 
-  const ParentCard({super.key, required this.parent, required this.onUpdate});
+  const ParentCard({super.key, required this.parent});
 
   @override
   Widget build(BuildContext context) {

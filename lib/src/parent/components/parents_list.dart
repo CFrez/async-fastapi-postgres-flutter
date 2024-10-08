@@ -33,7 +33,6 @@ class _ParentsListState extends State<ParentsList> {
     await listProvider.fetchItems();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final parents = listProvider.parents;
@@ -52,22 +51,18 @@ class _ParentsListState extends State<ParentsList> {
           },
         ),
       );
-    } 
+    }
     return RefreshIndicator(
       onRefresh: () => _refreshData(),
       child: ListView.builder(
-          itemCount: parents.length,
-          itemBuilder: (context, index) {
-            final parent = parents.elementAt(index);
-            return ParentCard(
-              parent: parent, 
-              onUpdate: () {
-                setState(() {});
-              }
-            );
-          },
-        ),
+        itemCount: parents.length,
+        itemBuilder: (context, index) {
+          final parent = parents.elementAt(index);
+          return ParentCard(
+            parent: parent,
+          );
+        },
+      ),
     );
   }
 }
-
