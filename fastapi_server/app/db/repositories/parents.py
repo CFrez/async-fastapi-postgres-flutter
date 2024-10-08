@@ -3,10 +3,10 @@
 All logic related to the parent entity is defined and grouped here.
 """
 
-# from typing import List
+from typing import List
 
-# from sqlalchemy import select
-# from sqlalchemy.orm import selectinload
+from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 
 from app.db.models.parents import Parent as ParentModel
 
@@ -31,7 +31,6 @@ class ParentRepository(SQLAlchemyRepository):
     update_schema = ParentUpdate
     filter_schema = ParentFilter
 
-    # Testing relationship patterns are working
     # async def get_children_by_parent_id(
     #     self,
     #     id,
@@ -46,3 +45,14 @@ class ParentRepository(SQLAlchemyRepository):
     #         return None
     #     else:
     #         return parent.children
+
+    async def get_parents_with_children(
+        self,
+        list_filter: filter_schema,
+    ) -> List[sqla_model] | None:
+        """Get all parents with their children."""
+        query = select(self.sqla_model).options(selectinload(self.sqla_model.children))
+        query = list_filter.filter(query)
+        query = list_filter.sort(query)
+        results = await self.db.execute(query)
+        return results.scalars().all()

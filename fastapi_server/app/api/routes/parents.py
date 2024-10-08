@@ -58,13 +58,13 @@ async def delete_parent(
     return ParentInDB.model_validate(result)
 
 
-@router.get("/", response_model=List[ParentInDB])
+@router.get("/", response_model=List[ParentWithChildren])
 async def list_parents(
     parent_filter=FilterDepends(ParentFilter),
     parent_repo: ParentRepository = Depends(get_repository(ParentRepository)),
-) -> List[ParentInDB]:
-    result = await parent_repo.filter_list(parent_filter)
-    return [ParentInDB.model_validate(parent) for parent in result]
+) -> List[ParentWithChildren]:
+    result = await parent_repo.get_parents_with_children(parent_filter)
+    return [ParentWithChildren.model_validate(parent) for parent in result]
 
 
 # # Basic relationship pattern endpoint

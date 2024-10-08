@@ -6,8 +6,7 @@ from typing import Optional
 from pydantic import ConfigDict
 
 from .base import BaseSchema, IDSchemaMixin
-
-# from .children import ChildInDB
+from .children import ChildInDB
 
 
 class ParentBase(BaseSchema):
@@ -40,5 +39,5 @@ class ParentUpdate(ParentBase):
 class ParentWithChildren(ParentInDB):
     """Schema for 'parent' with children."""
     # children_ids: list[int] = []
-    # children: list[ChildInDB] = []
+    children: list[ChildInDB] = []
     pass
