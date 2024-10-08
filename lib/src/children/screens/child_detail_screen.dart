@@ -35,7 +35,6 @@ class _ChildDetailScreenState extends State<ChildDetailScreen> {
 
     final newItem = await formProvider.saveChild();
     if (newItem != null) {
-      print(newItem.name);
       // ignore: use_build_context_synchronously
       Navigator.of(context).pop();
     } else {

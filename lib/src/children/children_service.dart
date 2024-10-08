@@ -6,8 +6,6 @@ import 'package:family/src/utils/api_service.dart';
 const childBaseUrl = 'children';
 
 class ChildrenService extends ApiService {
-  List<Child> children = [];
-
   Future<Child> create(Child child) async {
     final data = await post(childBaseUrl, child.toJson());
     // add child vs refetch?

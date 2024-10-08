@@ -12,7 +12,6 @@ from app.core.tags_metadata import parents_tag
 
 from ..schemas.parents import ParentCreate, ParentInDB, ParentUpdate, ParentWithChildren
 
-# from ..schemas.children import ChildInDB
 from ..filters.parents import ParentFilter
 
 
