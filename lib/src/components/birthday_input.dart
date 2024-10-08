@@ -45,8 +45,6 @@ class _BirthdayInputState extends State<BirthdayInput> {
           if (pickedDate != null) {
             dateController.text = _formatDate(pickedDate);
             widget.onChange(pickedDate);
-          } else {
-            print('Date is not selected');
           }
         });
   }

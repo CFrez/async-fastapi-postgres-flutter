@@ -15,7 +15,7 @@ abstract class ChildFormProvider extends ChangeNotifier {
   String get birthdate;
 
   // Operations
-  void clearChild();
+  void clearChild(String? parentId);
   void setChild(Child child);
   Future<Child?> saveChild();
   Future<void> deleteChild(Child child);
@@ -51,8 +51,9 @@ class ChildFormProviderImpl extends ChildFormProvider {
       _child.birthdate != null ? child.formatDate(_child.birthdate!) : '';
 
   @override
-  void clearChild() {
+  void clearChild(String? parentId) {
     _child = Child();
+    _child.parentId = parentId;
     handleUpdate();
   }
 

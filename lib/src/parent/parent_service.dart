@@ -11,7 +11,7 @@ class ParentsService extends ApiService {
   List<Parent> parents = [];
 
   Future<List<Parent>> list() async {
-    final data = await get(parentsBaseUrl);
+    final data = await get_list(parentsBaseUrl);
     parents = data.map((parent) => Parent.fromJson(parent)).toList();
     return parents;
   }
@@ -19,16 +19,21 @@ class ParentsService extends ApiService {
   Future<Parent> create(Parent parent) async {
     final data = await post(parentsBaseUrl, parent.toJson());
     // add parent vs refetch?
-    final groceryItem = Parent.fromJson(data);
+    final createdParent = Parent.fromJson(data);
     getIt<ParentsListProvider>().fetchItems();
-    return groceryItem;
+    return createdParent;
+  }
+
+  Future<Parent> read(String parentId) async {
+    final data = await get('$parentsBaseUrl/$parentId');
+    return Parent.fromJson(data);
   }
 
   Future<Parent> update(Parent parent) async {
     final data = await patch('$parentsBaseUrl/${parent.id}', parent.toJson());
-    final groceryItem = Parent.fromJson(data);
+    final updatedParent = Parent.fromJson(data);
     getIt<ParentsListProvider>().fetchItems();
-    return groceryItem;
+    return updatedParent;
   }
 
   Future<void> deleteParent(Parent parent) async {

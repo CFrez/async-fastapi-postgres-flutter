@@ -1,3 +1,5 @@
+import 'package:family/src/children/providers/child_form_provider.dart';
+import 'package:family/src/children/screens/child_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:family/main.dart';
@@ -42,6 +44,11 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
     }
   }
 
+  void _handleAddChild() {
+    getIt<ChildFormProvider>().clearChild(formProvider.parent.id);
+    Navigator.of(context).pushNamed(ChildDetailScreen.routeName);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,38 +67,40 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
         body: Form(
           key: formProvider.form,
           child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Stack(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
               children: [
-                Column(
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    icon: Icon(Icons.person),
+                  ),
+                  autofocus: true,
+                  onChanged: formProvider.setName,
+                  validator: formProvider.validateName,
+                  initialValue: formProvider.parent.name,
+                ),
+                SizedBox(height: 8),
+                BirthdayInput(
+                  birthdate: formProvider.parent.birthdate,
+                  onChange: formProvider.setBirthdate,
+                ),
+                SizedBox(height: 24),
+                Row(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Name',
-                        ),
-                        autofocus: true,
-                        onChanged: formProvider.setName,
-                        validator: formProvider.validateName,
-                        initialValue: formProvider.parent.name,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: BirthdayInput(
-                        birthdate: formProvider.parent.birthdate,
-                        onChange: formProvider.setBirthdate,
-                      ),
-                    ),
-                    Stack(
-                      children: [
-                        Text('Children'),
-                        ChildrenList(children: formProvider.parent.children),
-                      ],
-                    ),
+                    Icon(Icons.child_care),
+                    SizedBox(width: 12),
+                    Text('Children',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Spacer(),
+                    IconButton(
+                        onPressed: _handleAddChild, icon: Icon(Icons.add))
                   ],
                 ),
+                ChildrenList(children: formProvider.parent.children),
                 if (formProvider.isProcessing)
                   Center(
                     child: CircularProgressIndicator(),

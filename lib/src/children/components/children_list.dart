@@ -24,11 +24,6 @@ class _ChildrenListState extends State<ChildrenList> {
     if (mounted) setState(f);
   }
 
-  void _handleAddChild() {
-    getIt<ChildFormProvider>().clearChild();
-    Navigator.of(context).pushNamed(ChildDetailScreen.routeName);
-  }
-
   @override
   Widget build(BuildContext context) {
     if (widget.children.isEmpty) {

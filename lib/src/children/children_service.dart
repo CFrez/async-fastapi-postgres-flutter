@@ -1,4 +1,6 @@
+import 'package:family/main.dart';
 import 'package:family/src/children/child_model.dart';
+import 'package:family/src/parent/providers/parents_list_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:family/src/utils/api_service.dart';
@@ -9,14 +11,16 @@ class ChildrenService extends ApiService {
   Future<Child> create(Child child) async {
     final data = await post(childBaseUrl, child.toJson());
     // add child vs refetch?
-    final groceryItem = Child.fromJson(data);
-    return groceryItem;
+    final createdItem = Child.fromJson(data);
+    getIt<ParentsListProvider>().fetchItems();
+    return createdItem;
   }
 
   Future<Child> update(Child child) async {
     final data = await patch('$childBaseUrl/${child.id}', child.toJson());
-    final groceryItem = Child.fromJson(data);
-    return groceryItem;
+    final updatedItem = Child.fromJson(data);
+    getIt<ParentsListProvider>().fetchItems();
+    return updatedItem;
   }
 
   Future<void> deleteChild(Child child) async {
