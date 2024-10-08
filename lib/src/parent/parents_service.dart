@@ -24,6 +24,11 @@ class ParentsService extends ApiService {
     return groceryItem;
   }
 
+  Future<Parent> read(String parentId) async {
+    final data = await get('$parentsBaseUrl/$parentId');
+    return Parent.fromJson(data);
+  }
+
   Future<Parent> update(Parent parent) async {
     final data = await patch('$parentsBaseUrl/${parent.id}', parent.toJson());
     final groceryItem = Parent.fromJson(data);
