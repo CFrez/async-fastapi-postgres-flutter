@@ -1,5 +1,5 @@
 import 'package:family/src/children/children_service.dart';
-import 'package:family/src/children/providers/child_form_provider.dart';
+import 'package:family/src/children/providers/child_details_provider.dart';
 import 'package:family/src/children/screens/child_detail_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +34,7 @@ class ChildCard extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.edit, size: 18),
               onPressed: () {
-                getIt<ChildFormProvider>().setChild(child);
+                getIt<ChildDetailsProvider>().setChild(child);
                 Navigator.of(context).pushNamed(ChildDetailScreen.routeName);
               },
             ),

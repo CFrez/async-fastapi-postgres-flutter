@@ -1,4 +1,4 @@
-import 'package:family/src/children/providers/child_form_provider.dart';
+import 'package:family/src/children/providers/child_details_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:family/main.dart';
@@ -14,16 +14,16 @@ class ChildDetailScreen extends StatefulWidget {
 }
 
 class _ChildDetailScreenState extends State<ChildDetailScreen> {
-  final formProvider = getIt<ChildFormProvider>();
+  final detailsProvider = getIt<ChildDetailsProvider>();
   final TextEditingController dateController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    formProvider.addListener(() {
+    detailsProvider.addListener(() {
       setStateIfMounted(() {});
     });
-    dateController.text = formProvider.birthdate;
+    dateController.text = detailsProvider.birthdate;
   }
 
   void setStateIfMounted(f) {
@@ -31,9 +31,9 @@ class _ChildDetailScreenState extends State<ChildDetailScreen> {
   }
 
   void _handleSave() async {
-    if (formProvider.isProcessing) return;
+    if (detailsProvider.isProcessing) return;
 
-    final newItem = await formProvider.saveChild();
+    final newItem = await detailsProvider.saveChild();
     if (newItem != null) {
       // ignore: use_build_context_synchronously
       Navigator.of(context).pop();
@@ -59,7 +59,7 @@ class _ChildDetailScreenState extends State<ChildDetailScreen> {
           ],
         ),
         body: Form(
-          key: formProvider.form,
+          key: detailsProvider.form,
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Stack(
@@ -73,16 +73,17 @@ class _ChildDetailScreenState extends State<ChildDetailScreen> {
                           labelText: 'Name',
                         ),
                         autofocus: true,
-                        onChanged: formProvider.setName,
-                        validator: formProvider.validateName,
-                        initialValue: formProvider.child.name,
+                        onChanged: detailsProvider.setName,
+                        validator: detailsProvider.validateName,
+                        initialValue: detailsProvider.child.name,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: BirthdayInput(
-                        birthdate: formProvider.child.birthdate,
-                        onChange: formProvider.setBirthdate,
+                        initialValue: detailsProvider.child.birthdate,
+                        onChanged: detailsProvider.setBirthdate,
+                        validator: detailsProvider.validateBirthdate,
                       ),
                     ),
                     Padding(
@@ -91,13 +92,13 @@ class _ChildDetailScreenState extends State<ChildDetailScreen> {
                         decoration: InputDecoration(
                           labelText: 'Hobby',
                         ),
-                        onChanged: formProvider.setHobby,
-                        initialValue: formProvider.child.hobby,
+                        onChanged: detailsProvider.setHobby,
+                        initialValue: detailsProvider.child.hobby,
                       ),
                     ),
                   ],
                 ),
-                if (formProvider.isProcessing)
+                if (detailsProvider.isProcessing)
                   Center(
                     child: CircularProgressIndicator(),
                   )

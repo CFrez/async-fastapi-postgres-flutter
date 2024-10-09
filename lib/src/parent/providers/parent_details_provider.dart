@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:family/src/parent/parent_model.dart';
 import 'package:family/src/parent/parents_service.dart';
 
-abstract class ParentFormProvider extends ChangeNotifier {
+abstract class ParentDetailsProvider extends ChangeNotifier {
   Parent _parent = Parent();
-
   bool _isProcessing = false;
   final _form = GlobalKey<FormState>();
 
@@ -19,18 +18,18 @@ abstract class ParentFormProvider extends ChangeNotifier {
   void setParent(Parent parent);
   Future<Parent?> saveParent();
   Future<void> deleteParent(Parent parent);
+  void refreshParent();
 
   // Validation
   String? validateName(String? value);
+  String? validateBirthdate(String? value);
 
   // Setters
   void setName(String name);
   void setBirthdate(DateTime birthdate);
 }
 
-class ParentFormProviderImpl extends ParentFormProvider {
-  // ParentFormProviderImpl() {}
-
+class ParentDetailsProviderImpl extends ParentDetailsProvider {
   void handleUpdate() {
     notifyListeners();
   }
@@ -53,6 +52,17 @@ class ParentFormProviderImpl extends ParentFormProvider {
   @override
   void setParent(Parent parent) {
     _parent = parent;
+    handleUpdate();
+  }
+
+  @override
+  void refreshParent() async {
+    if (_parent.id == null) {
+      return;
+    }
+    final parent = await parentsService.read(_parent.id!);
+    _parent = parent;
+
     handleUpdate();
   }
 
@@ -85,6 +95,14 @@ class ParentFormProviderImpl extends ParentFormProvider {
   String? validateName(String? value) {
     if (value == null || value.isEmpty) {
       return 'Parent Name is Required';
+    }
+    return null;
+  }
+
+  @override
+  String? validateBirthdate(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Birthdate is Required';
     }
     return null;
   }

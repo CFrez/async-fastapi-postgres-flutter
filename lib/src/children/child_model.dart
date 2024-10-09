@@ -28,6 +28,7 @@ class Child {
   }
 
   Map<String, dynamic> toJson() {
+    print(birthdate);
     return {
       'id': id,
       'created_at': createdAt.toString(),

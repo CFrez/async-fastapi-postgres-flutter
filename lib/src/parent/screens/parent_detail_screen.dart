@@ -1,10 +1,10 @@
-import 'package:family/src/children/providers/child_form_provider.dart';
+import 'package:family/src/children/providers/child_details_provider.dart';
 import 'package:family/src/children/screens/child_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:family/main.dart';
 import 'package:family/src/children/components/children_list.dart';
-import 'package:family/src/parent/providers/parent_form_provider.dart';
+import 'package:family/src/parent/providers/parent_details_provider.dart';
 import 'package:family/src/components/birthday_input.dart';
 
 class ParentDetailScreen extends StatefulWidget {
@@ -17,12 +17,12 @@ class ParentDetailScreen extends StatefulWidget {
 }
 
 class _ParentDetailScreenState extends State<ParentDetailScreen> {
-  final formProvider = getIt<ParentFormProvider>();
+  final detailsProvider = getIt<ParentDetailsProvider>();
 
   @override
   void initState() {
     super.initState();
-    formProvider.addListener(() {
+    detailsProvider.addListener(() {
       setStateIfMounted(() {});
     });
   }
@@ -32,9 +32,9 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
   }
 
   void _handleSave() async {
-    if (formProvider.isProcessing) return;
+    if (detailsProvider.isProcessing) return;
 
-    final newItem = await formProvider.saveParent();
+    final newItem = await detailsProvider.saveParent();
     if (newItem != null) {
       // ignore: use_build_context_synchronously
       Navigator.of(context).pop();
@@ -45,7 +45,7 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
   }
 
   void _handleAddChild() {
-    getIt<ChildFormProvider>().clearChild(formProvider.parent.id);
+    getIt<ChildDetailsProvider>().clearChild(detailsProvider.parent.id);
     Navigator.of(context).pushNamed(ChildDetailScreen.routeName);
   }
 
@@ -65,7 +65,7 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
           ],
         ),
         body: Form(
-          key: formProvider.form,
+          key: detailsProvider.form,
           child: Padding(
             padding: EdgeInsets.all(16.0),
             child: Column(
@@ -76,14 +76,15 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
                     icon: Icon(Icons.person),
                   ),
                   autofocus: true,
-                  onChanged: formProvider.setName,
-                  validator: formProvider.validateName,
-                  initialValue: formProvider.parent.name,
+                  onChanged: detailsProvider.setName,
+                  validator: detailsProvider.validateName,
+                  initialValue: detailsProvider.parent.name,
                 ),
                 SizedBox(height: 8),
                 BirthdayInput(
-                  birthdate: formProvider.parent.birthdate,
-                  onChange: formProvider.setBirthdate,
+                  initialValue: detailsProvider.parent.birthdate,
+                  onChanged: detailsProvider.setBirthdate,
+                  validator: detailsProvider.validateBirthdate,
                 ),
                 SizedBox(height: 24),
                 Row(
@@ -100,8 +101,8 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
                         onPressed: _handleAddChild, icon: Icon(Icons.add))
                   ],
                 ),
-                ChildrenList(children: formProvider.parent.children),
-                if (formProvider.isProcessing)
+                ChildrenList(children: detailsProvider.parent.children),
+                if (detailsProvider.isProcessing)
                   Center(
                     child: CircularProgressIndicator(),
                   )

@@ -2,7 +2,7 @@ import 'package:family/src/parent/components/parents_list.dart';
 import 'package:flutter/material.dart';
 
 import 'package:family/main.dart';
-import 'package:family/src/parent/providers/parent_form_provider.dart';
+import 'package:family/src/parent/providers/parent_details_provider.dart';
 import 'package:family/src/parent/providers/parents_list_provider.dart';
 import 'package:family/src/parent/screens/parent_detail_screen.dart';
 
@@ -19,7 +19,7 @@ class _ParentsListScreenState extends State<ParentsListScreen> {
   final listProvider = getIt<ParentsListProvider>();
 
   void _handleAddParent() {
-    getIt<ParentFormProvider>().clearParent();
+    getIt<ParentDetailsProvider>().clearParent();
     Navigator.of(context).pushNamed(ParentDetailScreen.routeName);
   }
 

@@ -12,7 +12,6 @@ abstract class ParentsListProvider extends ChangeNotifier {
 
   // Operations
   Future<void> fetchItems();
-  Future<void> fetchParent(String parentId);
   void setItems(List<Parent> parents);
 }
 
@@ -34,16 +33,6 @@ class ParentsListProviderImpl extends ParentsListProvider {
     setItems([]);
     final parents = await parentsService.list();
     setItems(parents);
-    isLoading = false;
-    notifyListeners();
-  }
-
-  @override
-  Future<void> fetchParent(String parentId) async {
-    isLoading = true;
-    final parent = await parentsService.read(parentId);
-    final index = _parents.indexWhere((element) => element.id == parentId);
-    _parents[index] = parent;
     isLoading = false;
     notifyListeners();
   }

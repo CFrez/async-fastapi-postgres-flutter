@@ -1,8 +1,11 @@
-import 'package:family/src/children/child_model.dart';
-import 'package:family/src/children/children_service.dart';
 import 'package:flutter/material.dart';
 
-abstract class ChildFormProvider extends ChangeNotifier {
+import 'package:family/main.dart';
+import 'package:family/src/children/child_model.dart';
+import 'package:family/src/children/children_service.dart';
+import 'package:family/src/parent/providers/parent_details_provider.dart';
+
+abstract class ChildDetailsProvider extends ChangeNotifier {
   Child _child = Child();
 
   bool _isProcessing = false;
@@ -22,6 +25,7 @@ abstract class ChildFormProvider extends ChangeNotifier {
 
   // Validation
   String? validateName(String? value);
+  String? validateBirthdate(String? value);
 
   // Setters
   void setName(String name);
@@ -30,8 +34,8 @@ abstract class ChildFormProvider extends ChangeNotifier {
   void setParentId(String parentId);
 }
 
-class ChildFormProviderImpl extends ChildFormProvider {
-  // ChildFormProviderImpl() {}
+class ChildDetailsProviderImpl extends ChildDetailsProvider {
+  // ChildDetailsProviderImpl() {}
 
   void handleUpdate() {
     notifyListeners();
@@ -74,6 +78,7 @@ class ChildFormProviderImpl extends ChildFormProvider {
     final savedChild = isNew
         ? await childrenService.create(_child)
         : await childrenService.update(_child);
+    getIt<ParentDetailsProvider>().refreshParent();
     _isProcessing = false;
     // ToastService.success('${savedChild.name} ${isNew ? 'added' : 'updated'}');
     return savedChild;
@@ -83,6 +88,8 @@ class ChildFormProviderImpl extends ChildFormProvider {
   Future<void> deleteChild(Child child) async {
     _isProcessing = true;
     await childrenService.deleteChild(child);
+    // If a child exists to be deleted, then it will have a parent id
+    getIt<ParentDetailsProvider>().refreshParent();
     _isProcessing = false;
     // ToastService.success('${child.name} deleted');
     handleUpdate();
@@ -92,6 +99,14 @@ class ChildFormProviderImpl extends ChildFormProvider {
   String? validateName(String? value) {
     if (value == null || value.isEmpty) {
       return 'Child Name is Required';
+    }
+    return null;
+  }
+
+  @override
+  String? validateBirthdate(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Birthdate is Required';
     }
     return null;
   }

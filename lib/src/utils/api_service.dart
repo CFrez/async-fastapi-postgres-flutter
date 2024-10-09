@@ -8,11 +8,11 @@ class ApiService {
   }
 
   Future<dynamic> get(String url) async {
-    final response = await Dio().get(_url('url'));
+    final response = await Dio().get(_url(url));
     return response.data;
   }
 
-  Future<List<dynamic>> get_list(String url,
+  Future<List<dynamic>> getList(String url,
       [Map<String, dynamic> params = const {}]) async {
     final response = await Dio().get(_url(url), queryParameters: params);
     return response.data;

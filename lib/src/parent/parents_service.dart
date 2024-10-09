@@ -11,7 +11,7 @@ class ParentsService extends ApiService {
   List<Parent> parents = [];
 
   Future<List<Parent>> list() async {
-    final data = await get(parentsBaseUrl);
+    final data = await getList(parentsBaseUrl);
     parents = data.map((parent) => Parent.fromJson(parent)).toList();
     return parents;
   }
