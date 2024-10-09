@@ -2,7 +2,6 @@
 
 import datetime as dt
 import uuid
-from typing import Optional
 
 from pydantic import ConfigDict
 
@@ -15,8 +14,8 @@ class ChildBase(BaseSchema):
     """Base schema for 'child'."""
 
     name: str
-    birthdate: Optional[dt.date]
-    hobby: Optional[str]
+    birthdate: dt.date
+    hobby: str | None = None
     parent_id: uuid.UUID
 
 

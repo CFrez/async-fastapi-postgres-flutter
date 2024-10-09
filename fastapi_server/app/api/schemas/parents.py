@@ -1,7 +1,6 @@
 """Pydantic domain models for 'parents' ressource."""
 
 import datetime as dt
-from typing import Optional
 
 from pydantic import ConfigDict
 
@@ -13,7 +12,7 @@ class ParentBase(BaseSchema):
     """Base schema for 'parent'."""
 
     name: str
-    birthdate: Optional[dt.date]
+    birthdate: dt.date
 
 
 class ParentInDB(ParentBase, IDSchemaMixin):
@@ -37,8 +36,8 @@ class ParentUpdate(ParentBase):
 
     model_config = ConfigDict(extra="ignore")
 
-    name: str | None = None
-    birthdate: dt.date | None = None
+    name: str | None = ...
+    birthdate: dt.date | None = ...
 
 
 class ParentWithChildren(ParentInDB):
