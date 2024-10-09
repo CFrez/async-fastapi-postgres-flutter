@@ -23,7 +23,7 @@ async def create(
     child_new: ChildCreate,
     child_repo: ChildRepository = Depends(get_repository(ChildRepository)),
 ) -> ChildInDB:
-    
+
     result = await child_repo.create(obj_new=child_new)
     return ChildInDB.model_validate(result)
 

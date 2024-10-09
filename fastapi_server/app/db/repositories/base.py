@@ -46,7 +46,9 @@ class SQLAlchemyRepository(ABC):
     update_schema = UPDATE_SCHEMA
     filter_schema = FILTER_SCHEMA
 
-    def not_found_error(self, id: int, action: str, entity: str = label) -> HTTPException:
+    def not_found_error(
+        self, id: int, action: str, entity: str = label
+    ) -> HTTPException:
         """Raise 404 error for missing object."""
         logger.warning(f"No {entity} with id = {id}.")
         return HTTPException(

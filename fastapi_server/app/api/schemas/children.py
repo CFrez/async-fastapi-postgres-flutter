@@ -13,6 +13,7 @@ from .base import BaseSchema, IDSchemaMixin
 
 class ChildBase(BaseSchema):
     """Base schema for 'child'."""
+
     name: str
     birthdate: Optional[dt.date]
     hobby: Optional[str]
@@ -27,6 +28,7 @@ class ChildInDB(ChildBase, IDSchemaMixin):
 
 class ChildCreate(ChildBase):
     """Schema for creating 'child' in database."""
+
     pass
 
 
@@ -36,12 +38,14 @@ class ChildUpdate(ChildBase):
     Updating only allowed for 'name', 'birthdate', 'hobby', 'parent_id' fields.
     All other fields will be ignored.
     """
-    model_config = ConfigDict(extra='ignore') 
-    
-    name : str | None = None
+
+    model_config = ConfigDict(extra="ignore")
+
+    name: str | None = None
     birthdate: dt.date | None = None
     hobby: str | None = None
     parent_id: uuid.UUID | None = None
+
 
 class ChildWithParent(ChildInDB):
     # parent: ParentInDB

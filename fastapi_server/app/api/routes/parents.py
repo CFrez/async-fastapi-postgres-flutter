@@ -34,7 +34,7 @@ async def read_parent(
     parent_id: uuid.UUID,
     parent_repo: ParentRepository = Depends(get_repository(ParentRepository)),
 ) -> ParentWithChildren:
-    result = await parent_repo.read(id=parent_id)
+    result = await parent_repo.read_parent_with_children(id=parent_id)
     return ParentWithChildren.model_validate(result)
 
 
@@ -62,22 +62,5 @@ async def list_parents(
     parent_filter=FilterDepends(ParentFilter),
     parent_repo: ParentRepository = Depends(get_repository(ParentRepository)),
 ) -> List[ParentWithChildren]:
-    result = await parent_repo.get_parents_with_children(parent_filter)
+    result = await parent_repo.list_parents_with_children(parent_filter)
     return [ParentWithChildren.model_validate(parent) for parent in result]
-
-
-# # Basic relationship pattern endpoint
-# # =========================================================================== #
-# @router.get("/get_children", name="parents: get-all-children-for-parent") #response_model=List[ChildInDB]
-# async def get_parent_children(
-#     id: int,
-#     parent_repo: ParentRepository = Depends(get_repository(ParentRepository)),
-# ) -> List[ChildInDB] | None:
-#     children = await parent_repo.get_children_by_parent_id(id=id)
-#     if children is None:
-#         logger.info(f"Parent with id: {id} not found.")
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Parent with id: {id} not found.")
-#     elif not children:
-#         logger.info(f"Parent with id: {id} has no children.")
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"No children found for parent with with id: {id}.")
-#     return children

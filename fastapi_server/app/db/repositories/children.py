@@ -12,8 +12,7 @@ from app.api.filters.children import ChildFilter
 class ChildRepository(SQLAlchemyRepository):
     """Handle all logic related to Child entity.
 
-    Inheritence from 'SQLAlchemyRepository' allows for
-    crudl functionality, only schemata and models used have to be defined.
+    Inheritence from 'SQLAlchemyRepository' allows for crudl functionality.
     """
 
     label = "child"
